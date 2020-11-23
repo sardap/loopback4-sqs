@@ -1,5 +1,5 @@
 import {bind, BindingScope} from '@loopback/core';
-import AWS, {SQS} from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import debugFactory from 'debug';
 import {EventEmitter} from 'events';
 import {Consumer, SQSMessage} from 'sqs-consumer';
@@ -8,7 +8,7 @@ const debug = debugFactory('loopback:sqs:consumer');
 
 @bind({scope: BindingScope.SINGLETON})
 export class SQSConsumer extends EventEmitter {
-  private sqs: SQS;
+  private sqs: AWS.SQS;
 
   constructor() {
     super();
