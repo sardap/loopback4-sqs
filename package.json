@@ -1,0 +1,23 @@
+{
+  "name": "@sardap/loopback-sqs",
+  "version": "1.0.1",
+  "description": "a loopback4 component for SQS inspired by https://github.com/alexnfsc175/loopback-rabbitmq#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sardap/loopback4-sqs.git"
+  },
+  "author": "sardap",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sardap/loopback4-sqs/issues"
+  },
+  "homepage": "https://github.com/sardap/loopback4-sqs#readme",
+  "dependencies": {
+    "@loopback/core": "^2.12.0",
+    "aws-sdk": "^2.797.0",
+    "sqs-consumer": "^5.5.0"
+  }
+}
