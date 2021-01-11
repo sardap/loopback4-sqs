@@ -1,4 +1,4 @@
-import {bind, BindingScope} from '@loopback/core';
+import {bind, BindingScope, lifeCycleObserver} from '@loopback/core';
 import * as AWS from 'aws-sdk';
 import debugFactory from 'debug';
 import {EventEmitter} from 'events';
@@ -9,6 +9,7 @@ const debug = debugFactory('loopback:sqs:consumer');
 @bind({scope: BindingScope.SINGLETON})
 export class SQSConsumer extends EventEmitter {
   private sqs: AWS.SQS;
+  private consumers: Consumer[];
 
   constructor() {
     super();
@@ -46,6 +47,14 @@ export class SQSConsumer extends EventEmitter {
 
     consumer.on('processing_error', onProcessingError);
 
-    consumer.start();
+	consumer.start();
+	
+	this.consumers.push(consumer);
+  }
+
+  stopAllConsumers() {
+	for(var consumer of this.consumers) {
+		consumer.stop();
+	}
   }
 }

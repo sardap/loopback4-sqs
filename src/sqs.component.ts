@@ -5,9 +5,12 @@ import {
   config,
   ContextTags,
   createBindingFromClass,
+  inject,
+  LifeCycleObserver,
   ProviderMap,
 } from '@loopback/core';
 import * as AWS from 'aws-sdk';
+import { SQS } from 'aws-sdk';
 import debugFactory from 'debug';
 import {ConfigDefaults, SQSComponentConfig} from './interfaces';
 import {SQSBindings} from './keys';
@@ -21,9 +24,11 @@ const debug = debugFactory('loopback:sqs:component');
     [ContextTags.KEY]: SQSBindings.COMPONENT.key,
   },
 })
-export class SQSComponent implements Component {
+export class SQSComponent implements Component, LifeCycleObserver  {
   providers?: ProviderMap = {};
   bindings?: Binding[];
+  private status = 'not-initialized';
+
   constructor(
     @config({fromBinding: SQSBindings.COMPONENT})
     private componentConfig: Required<SQSComponentConfig>,
@@ -41,6 +46,21 @@ export class SQSComponent implements Component {
       createBindingFromClass(SQSConsumer, {
         key: SQSBindings.SQS_CONSUMER,
       }),
-    ];
+	];
+	
+	this.status = 'initialized';
+  }
+
+  init() {
+    this.status = `initialized`;
+  }
+
+  start() {
+    this.status = `started`;
+  }
+
+  stop(@inject(SQSBindings.SQS_CONSUMER) consumer: SQSConsumer) {
+	consumer.stopAllConsumers();
+    this.status = `stopped`;
   }
 }
