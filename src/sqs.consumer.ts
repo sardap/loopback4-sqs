@@ -1,20 +1,21 @@
-import {bind, BindingScope, lifeCycleObserver} from '@loopback/core';
-import * as AWS from 'aws-sdk';
-import debugFactory from 'debug';
-import {EventEmitter} from 'events';
-import {Consumer, SQSMessage} from 'sqs-consumer';
+import { bind, BindingScope, LifeCycleObserver } from "@loopback/core";
+import * as AWS from "aws-sdk";
+import debugFactory from "debug";
+import { EventEmitter } from "events";
+import { Consumer, SQSMessage } from "sqs-consumer";
 
-const debug = debugFactory('loopback:sqs:consumer');
+const debug = debugFactory("loopback:sqs:consumer");
 
-@bind({scope: BindingScope.SINGLETON})
-export class SQSConsumer extends EventEmitter {
+@bind({ scope: BindingScope.SINGLETON })
+export class SQSConsumer extends EventEmitter implements LifeCycleObserver {
   private sqs: AWS.SQS;
   private consumers: Consumer[];
 
   constructor() {
     super();
-    debug('creating sqs instance');
+    debug("creating sqs instance");
     this.sqs = new AWS.SQS();
+    this.consumers = [];
   }
 
   async subscribeToQueue<T>(
@@ -22,13 +23,13 @@ export class SQSConsumer extends EventEmitter {
     handler: (msg: T | undefined, rawMessage: SQSMessage) => Promise<void>,
     onError: (err: Error) => void,
     onProcessingError: (err: Error) => void,
-    messageAttributeNames?: string[],
+    messageAttributeNames?: string[]
   ): Promise<void> {
     const consumer = Consumer.create({
       queueUrl: queueName,
       pollingWaitTimeMs: 1,
       messageAttributeNames: messageAttributeNames,
-      handleMessage: async message => {
+      handleMessage: async (message) => {
         let body: T | undefined;
         body = undefined;
         if (message.Body) {
@@ -43,18 +44,29 @@ export class SQSConsumer extends EventEmitter {
       sqs: this.sqs,
     });
 
-    consumer.on('error', onError);
+    consumer.on("error", onError);
 
-    consumer.on('processing_error', onProcessingError);
+    consumer.on("processing_error", onProcessingError);
 
-	consumer.start();
-	
-	this.consumers.push(consumer);
+    consumer.start();
+
+    this.consumers.push(consumer);
   }
 
   stopAllConsumers() {
-	for(var consumer of this.consumers) {
-		consumer.stop();
-	}
+    debug(`stopping consumers`);
+    let num = this.consumers.length;
+    for (var consumer of this.consumers) {
+      consumer.stop();
+    }
+    debug(`stopped ${num} consumers`);
+  }
+
+  init() {}
+
+  start() {}
+
+  stop() {
+    this.stopAllConsumers();
   }
 }
