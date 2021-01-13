@@ -9,10 +9,10 @@ import {
 } from "@loopback/core";
 import * as AWS from "aws-sdk";
 import debugFactory from "debug";
-import { ConfigDefaults, SQSComponentConfig } from "./interfaces";
-import { SQSBindings } from "./keys";
-import { SQSConsumer } from "./sqs.consumer";
-import { SQSProducer } from "./sqs.producer";
+import {ConfigDefaults, SQSComponentConfig} from "./interfaces";
+import {SQSBindings} from "./keys";
+import {SQSConsumer} from "./sqs.consumer";
+import {SQSProducer} from "./sqs.producer";
 
 const debug = debugFactory("loopback:sqs:component");
 

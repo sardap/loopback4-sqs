@@ -1,8 +1,8 @@
-import { bind, BindingScope, LifeCycleObserver } from "@loopback/core";
+import {bind, BindingScope, LifeCycleObserver} from "@loopback/core";
 import * as AWS from "aws-sdk";
 import debugFactory from "debug";
-import { EventEmitter } from "events";
-import { Consumer, SQSMessage } from "sqs-consumer";
+import {EventEmitter} from "events";
+import {Consumer, SQSMessage} from "sqs-consumer";
 
 const debug = debugFactory("loopback:sqs:consumer");
 
