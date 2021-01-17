@@ -1,6 +1,6 @@
 {
   "name": "@sardap/loopback-sqs",
-  "version": "1.0.7",
+  "version": "1.0.6",
   "description": "a loopback4 component for SQS inspired by https://github.com/alexnfsc175/loopback-rabbitmq#readme",
   "prepublish": "tsc",
   "scripts": {
