@@ -6,6 +6,8 @@ import {Consumer, SQSMessage} from "sqs-consumer";
 
 const debug = debugFactory("loopback:sqs:consumer");
 
+export type handlerFun = (msg: any | undefined, rawMessage: SQSMessage) => Promise<void>
+
 @bind({ scope: BindingScope.SINGLETON })
 export class SQSConsumer extends EventEmitter implements LifeCycleObserver {
   private sqs: AWS.SQS;
@@ -20,7 +22,7 @@ export class SQSConsumer extends EventEmitter implements LifeCycleObserver {
 
   async subscribeToQueue<T>(
     queueName: string,
-    handler: (msg: T | undefined, rawMessage: SQSMessage) => Promise<void>,
+    handler: handlerFun,
     onError: (err: Error) => void,
     onProcessingError: (err: Error) => void,
     messageAttributeNames?: string[]
