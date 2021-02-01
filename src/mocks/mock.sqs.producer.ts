@@ -10,7 +10,7 @@ export class MockSQSProducer extends SQSProducer {
   }
 
   async produce(params: AWS.SQS.Types.SendMessageRequest): Promise<void> { 
-    MockSQS.sendMessage(params);
+    await MockSQS.sendMessage(params);
   }
 }
   
