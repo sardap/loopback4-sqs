@@ -1,6 +1,6 @@
 import debugFactory from "debug";
 import { SQSConsumer, handlerFun } from "../sqs.consumer";
-import { MockSQSSender } from "./mock.sqs.sender";
+import { MockSQS } from "./mock.sqs.sender";
 
 const debug = debugFactory("loopback:sqs:mock:consumer");
 
@@ -20,13 +20,13 @@ export class MockSQSConsumer extends SQSConsumer {
     messageAttributeNames?: string[]
   ): Promise<void> {
     debug(`Subscribed to mock queue:${queueName}`);
-    MockSQSSender.addHandler(queueName, handler);
+    MockSQS.addHandler(queueName, handler);
     this.queues.push(queueName);
   }
 
   stopAllConsumers() {
     for (let queue of this.queues) {
-      MockSQSSender.removeHandler(queue);
+      MockSQS.removeHandler(queue);
     }
   }
 }

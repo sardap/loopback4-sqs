@@ -1,6 +1,6 @@
 import debugFactory from "debug";
 import { SQSProducer } from "../sqs.producer";
-import { MockSQSSender } from "./mock.sqs.sender";
+import { MockSQS } from "./mock.sqs.sender";
 
 const debug = debugFactory("loopback:sqs:mock:producer");
 
@@ -10,7 +10,7 @@ export class MockSQSProducer extends SQSProducer {
   }
 
   async produce(params: AWS.SQS.Types.SendMessageRequest): Promise<void> { 
-    MockSQSSender.sendMessage(params);
+    MockSQS.sendMessage(params);
   }
 }
   

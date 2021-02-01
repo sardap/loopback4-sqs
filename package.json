@@ -1,9 +1,10 @@
 {
   "name": "@sardap/loopback-sqs",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "a loopback4 component for SQS inspired by https://github.com/alexnfsc175/loopback-rabbitmq#readme",
   "prepublish": "tsc",
   "scripts": {
+    "build": "tsc",
     "start": "tsc && node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

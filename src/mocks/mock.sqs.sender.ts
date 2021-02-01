@@ -1,12 +1,13 @@
 import debugFactory from "debug";
-import { SQSMessage } from "..";
+import { SendMessageRequest } from "..";
 import { handlerFun } from "../sqs.consumer";
+
 const debug = debugFactory("loopback:sqs:mock:consumer");
 
-export class MockSQSSender {
-  private static handlers: Record<string, handlerFun>;
+export class MockSQS {
+  private static handlers: Record<string, handlerFun> = {};
 
-  static async sendMessage(params: AWS.SQS.Types.SendMessageRequest) {
+  static async sendMessage(params: SendMessageRequest) {
     debug(`sending Mock Message ${JSON.stringify(params.MessageBody)} to ${params.QueueUrl}`);
     if(!params.MessageBody) {
       throw Error("don't send empty bodies to mock queue");
